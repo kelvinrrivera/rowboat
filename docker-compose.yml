@@ -6,7 +6,7 @@ services:
       context: ./apps/rowboat
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3088:3000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/rowboat
@@ -152,18 +152,18 @@ services:
       - QDRANT_API_KEY=${QDRANT_API_KEY}
     restart: unless-stopped
 
-  # chat_widget:
-  #   build:
-  #     context: ./apps/experimental/chat_widget
-  #     dockerfile: Dockerfile
-  #   profiles: [ "chat_widget" ]
-  #   ports:
-  #     - "3006:3006"
-  #   environment:
-  #     - PORT=3006
-  #     - CHAT_WIDGET_HOST=http://localhost:3006
-  #     - ROWBOAT_HOST=http://localhost:3000
-  #   restart: unless-stopped
+  chat_widget:
+     build:
+       context: ./apps/experimental/chat_widget
+       dockerfile: Dockerfile
+     profiles: [ "chat_widget" ]
+     ports:
+       - "3006:3006"
+     environment:
+       - PORT=3006
+       - CHAT_WIDGET_HOST=https://agent.kelvinscale.net:3006
+       - ROWBOAT_HOST=https://agent.kelvinscale.net
+     restart: unless-stopped
 
   mongo:
     image: mongo:latest
@@ -188,14 +188,14 @@ services:
     ports:
       - "8000:8000"
 
-  # twilio_handler:
-  #   build:
-  #     context: ./apps/experimental/twilio_handler
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "4010:4010"
-  #   environment:
-  #     - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
-  #     - ROWBOAT_API_HOST=http://rowboat:3000
-  #     - MONGODB_URI=mongodb://mongo:27017/rowboat
-  #   restart: unless-stopped
+   twilio_handler:
+     build:
+       context: ./apps/experimental/twilio_handler
+       dockerfile: Dockerfile
+     ports:
+       - "4010:4010"
+     environment:
+       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+       - ROWBOAT_API_HOST=https://agent.kelvinscale.net
+       - MONGODB_URI=mongodb://mongo:27017/rowboat
+     restart: unless-stopped
