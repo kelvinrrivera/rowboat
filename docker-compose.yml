@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   uploads:
     driver: local
@@ -90,32 +88,32 @@ services:
       - PROVIDER_COPILOT_MODEL=${PROVIDER_COPILOT_MODEL}
     restart: unless-stopped
 
-  # tools_webhook:
-  #   build:
-  #     context: ./apps/experimental/tools_webhook
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3005:3005"
-  #   environment:
-  #     - SIGNING_SECRET=${SIGNING_SECRET}
-  #   restart: unless-stopped
+   tools_webhook:
+     build:
+       context: ./apps/experimental/tools_webhook
+       dockerfile: Dockerfile
+     ports:
+       - "3005:3005"
+     environment:
+       - SIGNING_SECRET=${SIGNING_SECRET}
+     restart: unless-stopped
 
-  # simulation_runner:
-  #   build:
-  #     context: ./apps/experimental/simulation_runner
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - MONGODB_URI=mongodb://mongo:27017/rowboat
-  #     - ROWBOAT_API_HOST=http://rowboat:3000
-  #     - OPENAI_API_KEY=${OPENAI_API_KEY}
-  #   restart: unless-stopped
+   simulation_runner:
+     build:
+       context: ./apps/experimental/simulation_runner
+       dockerfile: Dockerfile
+     environment:
+       - MONGODB_URI=mongodb://mongo:27017/rowboat
+       - ROWBOAT_API_HOST=http://rowboat:3000
+       - OPENAI_API_KEY=${OPENAI_API_KEY}
+     restart: unless-stopped
 
   setup_qdrant:
     build:
       context: ./apps/rowboat
       dockerfile: scripts.Dockerfile
     command: ["sh", "-c", "npm run setupQdrant"]
-    profiles: [ "setup_qdrant" ]
+    profiles: ["setup_qdrant"]
     depends_on:
       qdrant:
         condition: service_healthy
@@ -130,7 +128,7 @@ services:
       context: ./apps/rowboat
       dockerfile: scripts.Dockerfile
     command: ["sh", "-c", "npm run deleteQdrant"]
-    profiles: [ "delete_qdrant" ]
+    profiles: ["delete_qdrant"]
     depends_on:
       qdrant:
         condition: service_healthy
@@ -144,7 +142,7 @@ services:
       context: ./apps/rowboat
       dockerfile: scripts.Dockerfile
     command: ["npm", "run", "ragFilesWorker"]
-    profiles: [ "rag_files_worker" ]
+    profiles: ["rag_files_worker"]
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - EMBEDDING_PROVIDER_BASE_URL=${EMBEDDING_PROVIDER_BASE_URL}
@@ -170,7 +168,7 @@ services:
       context: ./apps/rowboat
       dockerfile: scripts.Dockerfile
     command: ["npm", "run", "ragUrlsWorker"]
-    profiles: [ "rag_urls_worker" ]
+    profiles: ["rag_urls_worker"]
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - EMBEDDING_PROVIDER_BASE_URL=${EMBEDDING_PROVIDER_BASE_URL}
@@ -188,7 +186,7 @@ services:
       context: ./apps/rowboat
       dockerfile: scripts.Dockerfile
     command: ["npm", "run", "ragTextWorker"]
-    profiles: [ "rag_text_worker" ]
+    profiles: ["rag_text_worker"]
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - EMBEDDING_PROVIDER_BASE_URL=${EMBEDDING_PROVIDER_BASE_URL}
@@ -200,18 +198,18 @@ services:
       - QDRANT_API_KEY=${QDRANT_API_KEY}
     restart: unless-stopped
 
-  # chat_widget:
-  #   build:
-  #     context: ./apps/experimental/chat_widget
-  #     dockerfile: Dockerfile
-  #   profiles: [ "chat_widget" ]
-  #   ports:
-  #     - "3006:3006"
-  #   environment:
-  #     - PORT=3006
-  #     - CHAT_WIDGET_HOST=http://localhost:3006
-  #     - ROWBOAT_HOST=http://localhost:3000
-  #   restart: unless-stopped
+   chat_widget:
+     build:
+       context: ./apps/experimental/chat_widget
+       dockerfile: Dockerfile
+     profiles: ["chat_widget"]
+     ports:
+       - "3006:3006"
+     environment:
+       - PORT=3006
+       - CHAT_WIDGET_HOST=http://localhost:3006
+       - ROWBOAT_HOST=http://localhost:3000
+     restart: unless-stopped
 
   mongo:
     image: mongo:latest
@@ -232,21 +230,21 @@ services:
     build:
       context: ./apps/docs
       dockerfile: Dockerfile
-    profiles: [ "docs" ]
+    profiles: ["docs"]
     ports:
       - "8000:8000"
 
-  # twilio_handler:
-  #   build:
-  #     context: ./apps/experimental/twilio_handler
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "4010:4010"
-  #   environment:
-  #     - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
-  #     - ROWBOAT_API_HOST=http://rowboat:3000
-  #     - MONGODB_URI=mongodb://mongo:27017/rowboat
-  #   restart: unless-stopped
+   twilio_handler:
+     build:
+       context: ./apps/experimental/twilio_handler
+       dockerfile: Dockerfile
+     ports:
+       - "4010:4010"
+     environment:
+       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+       - ROWBOAT_API_HOST=http://rowboat:3000
+       - MONGODB_URI=mongodb://mongo:27017/rowboat
+     restart: unless-stopped
 
   qdrant:
     build:
@@ -257,7 +255,7 @@ services:
     environment:
       - QDRANT__STORAGE__STORAGE_PATH=/data/qdrant
     restart: unless-stopped
-    profiles: [ "qdrant" ]
+    profiles: ["qdrant"]
     volumes:
       - ./data/qdrant:/data/qdrant
     healthcheck:
