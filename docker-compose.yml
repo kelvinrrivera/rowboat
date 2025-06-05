@@ -12,7 +12,7 @@ services:
       context: ./apps/rowboat
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3001"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGODB_CONNECTION_STRING=mongodb://mongo:27017/rowboat
@@ -58,7 +58,7 @@ services:
       context: ./apps/rowboat_agents
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "3002:3002"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - API_KEY=${AGENTS_API_KEY}
@@ -78,7 +78,7 @@ services:
       context: ./apps/copilot
       dockerfile: Dockerfile
     ports:
-      - "3002:3002"
+      - "3003:3003"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - API_KEY=${COPILOT_API_KEY}
