@@ -1,5 +1,5 @@
 volumes:
-  uploads:
+  app_uploads:
 
 services:
   rowboat:
@@ -46,7 +46,7 @@ services:
       - KLAVIS_GOOGLE_CLIENT_ID=${KLAVIS_GOOGLE_CLIENT_ID}
     restart: unless-stopped
     volumes:
-      - uploads:/app/uploads
+      - app_uploads:/app/uploads
 
   rowboat_agents:
     build:
@@ -156,7 +156,7 @@ services:
       - USE_GEMINI_FILE_PARSING=${USE_GEMINI_FILE_PARSING}
     restart: unless-stopped
     volumes:
-      - uploads:/app/uploads
+      - app_uploads:/app/uploads
 
   rag_urls_worker:
     build:
