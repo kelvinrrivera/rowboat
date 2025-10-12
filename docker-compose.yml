@@ -98,7 +98,7 @@ services:
   #     - PROVIDER_COPILOT_MODEL=${PROVIDER_COPILOT_MODEL}
   #   restart: unless-stopped
 
-   tools_webhook:
+  tools_webhook:
      build:
        context: ./apps/experimental/tools_webhook
        dockerfile: Dockerfile
@@ -108,7 +108,7 @@ services:
        - SIGNING_SECRET=${SIGNING_SECRET}
      restart: unless-stopped
 
-   simulation_runner:
+  simulation_runner:
      build:
        context: ./apps/experimental/simulation_runner
        dockerfile: Dockerfile
@@ -199,7 +199,7 @@ services:
       - COMPOSIO_API_KEY=${COMPOSIO_API_KEY}
     restart: unless-stopped
 
-   chat_widget:
+  chat_widget:
      build:
        context: ./apps/experimental/chat_widget
        dockerfile: Dockerfile
